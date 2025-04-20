@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SwingFormExample1 extends JFrame implements ActionListener {
+public class SwingFormGridBagExample1 extends JFrame implements ActionListener {
 
     private JTextField nameField;
     private JComboBox<String> countryBox;
@@ -11,27 +11,49 @@ public class SwingFormExample1 extends JFrame implements ActionListener {
     private JButton submitBtn;
     private ButtonGroup genderGroup;
 
-    public SwingFormExample1() {
-        setTitle("Swing Form Example");
-        setSize(400, 350);
+    public SwingFormGridBagExample1() {
+        setTitle("Swing Form with GridBagLayout");
+        setSize(450, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the window
-        setLayout(new GridLayout(7, 2, 10, 10));
+        setLocationRelativeTo(null);
 
-        // Name
-        add(new JLabel("Name:"));
-        nameField = new JTextField();
-        add(nameField);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Country (ComboBox)
-        add(new JLabel("Country:"));
+        // Name Label
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("Name:"), gbc);
+
+        // Name Field
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        nameField = new JTextField(15);
+        panel.add(nameField, gbc);
+
+        // Country Label
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Country:"), gbc);
+
+        // Country ComboBox
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         String[] countries = { "USA", "Canada", "India", "Germany", "Australia" };
         countryBox = new JComboBox<>(countries);
-        add(countryBox);
+        panel.add(countryBox, gbc);
 
-        // Gender (RadioButtons)
-        add(new JLabel("Gender:"));
-        JPanel genderPanel = new JPanel();
+        // Gender Label
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Gender:"), gbc);
+
+        // Gender Radio Buttons
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         maleBtn = new JRadioButton("Male");
         femaleBtn = new JRadioButton("Female");
         genderGroup = new ButtonGroup();
@@ -39,25 +61,33 @@ public class SwingFormExample1 extends JFrame implements ActionListener {
         genderGroup.add(femaleBtn);
         genderPanel.add(maleBtn);
         genderPanel.add(femaleBtn);
-        add(genderPanel);
+        panel.add(genderPanel, gbc);
 
-        // Interests (CheckBoxes)
-        add(new JLabel("Interests:"));
-        JPanel interestPanel = new JPanel();
+        // Interests Label
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Interests:"), gbc);
+
+        // Interest Checkboxes
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        JPanel interestPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         musicBox = new JCheckBox("Music");
         sportsBox = new JCheckBox("Sports");
         readingBox = new JCheckBox("Reading");
         interestPanel.add(musicBox);
         interestPanel.add(sportsBox);
         interestPanel.add(readingBox);
-        add(interestPanel);
+        panel.add(interestPanel, gbc);
 
-        // Submit button
+        // Submit Button
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         submitBtn = new JButton("Submit");
         submitBtn.addActionListener(this);
-        add(new JLabel()); // empty cell
-        add(submitBtn);
+        panel.add(submitBtn, gbc);
 
+        add(panel);
         setVisible(true);
     }
 
@@ -80,11 +110,11 @@ public class SwingFormExample1 extends JFrame implements ActionListener {
                         "\nCountry: " + country +
                         "\nGender: " + gender +
                         "\nInterests: " + interests.toString(),
-                "Form Data",
+                "Form Submission",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SwingFormExample1());
+        SwingUtilities.invokeLater(SwingFormGridBagExample1::new);
     }
 }
